@@ -1,16 +1,15 @@
 function! s:get_current_ts_path() abort
-  let ts_path = '/node_modules/typescript/lib/tsserverlibrary.js'
+  let tsdk_path = '/node_modules/typescript/lib'
 
   let project_dir = lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'package.json')
-  let tsserverlibrary_path = project_dir . ts_path
+  let project_tsdk_path = project_dir . tsdk_path
 
   let server_dir = lsp_settings#servers_dir() . '/astro-ls'
-  let fallback_path = server_dir . ts_path
+  let fallback_path = server_dir . tsdk_path
 
-  let path = filereadable(tsserverlibrary_path) ? tsserverlibrary_path : fallback_path
+  let path = filereadable(project_tsdk_path) ? project_tsdk_path : fallback_path
   return {
-        \   'serverPath': path,
-        \   'localizedPath': v:null,
+        \   'tsdk': path,
         \ }
 endfunction
 
@@ -22,8 +21,7 @@ endfunction
 
 let g:vim_lsp_settings_astro_options = {
       \   'typescript': {
-      \     'serverPath': '',
-      \     'localizedPath': v:null,
+      \     'tsdk': '',
       \   },
       \ }
 
